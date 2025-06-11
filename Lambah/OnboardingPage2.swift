@@ -4,61 +4,68 @@
 //
 //  Created by Reef Saeed on 15/03/2025.
 //
+
 import SwiftUI
 
 struct OnboardingPage2: View {
     var getStartedAction: () -> Void
+    var switchToPreviousPage: () -> Void
     
     var body: some View {
         ZStack {
-            // Use direct color if backC might be missing
-            Color.backC.ignoresSafeArea()
+            // Gradient background
+            LinearGradient(
+                gradient: Gradient(stops: [
+                    .init(color: Color(hex: "#3A4354"), location: 0.0),
+                    .init(color: Color(hex: "#3A4354"), location: 0.0),
+                    .init(color: Color(hex: "#F5F5F5"), location: 0.5),
+                    .init(color: Color(hex: "#F5F5F5"), location: 1.0)
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
             
-            // Top rounded rectangle
-            RoundedRectangle(cornerRadius: 200)
-                .offset(y: -210)
-                .fill(Color.primyC) // Use direct color instead of primyC
-                .overlay(
-                    RoundedRectangle(cornerRadius: 200)
-                        .stroke(Color.strkC, lineWidth: 5) // Use direct color instead of strkC
-                        .offset(y: -210)
-                )
-                .ignoresSafeArea()
-            
-            // Placeholder if image is missing
-            if let _ = UIImage(named: "ph2") {
+            VStack {
+                Spacer()
+                
+                // Image centered
                 Image("ph2")
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 210, height: 210)
-            } else {
-                Image(systemName: "car.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 210, height: 210)
-                    .foregroundColor(.white)
+                    .frame(width: 300, height: 300)
+                
+                // Title
+                Text("Expert Guidance & Solutions")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.primyC)
+                    .padding(.top, 30)
+                
+                // Description text
+                Text("Get detailed explanations of what each warning means and what actions you should take")
+                    .fontWeight(.regular)
+                    .font(.system(size: 15))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondryC)
+                    .padding(.horizontal, 30)
+                    .padding(.top, 5)
+                
+                Spacer()
+                Spacer() // Extra spacer to push content up (same as page 1)
+                
+                // Start button - keeping original position
+                Button(action: {
+                    getStartedAction()
+                }) {
+                    Text("Start")
+                        .foregroundColor(.white)
+                        .font(.system(size: 18, weight: .bold))
+                        .padding(.horizontal, 80)
+                        .padding(.vertical, 15)
+                        .background(Color("yellow1"))
+                        .cornerRadius(18)
+                }
+                .padding(.bottom, 50)
             }
-            
-            Text("You will see a description of the sign")
-                .fontWeight(.bold)
-                .offset(y: -187)
-                .multilineTextAlignment(.center)
-                .lineLimit(10)
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-            
-            Button(action: {
-                getStartedAction()
-            }) {
-                Text("Start")
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 80)
-                    .padding(.vertical, 15)
-                    .background(Color.yellow1) // Use system yellow if color asset is missing
-                    .cornerRadius(18)
-                    .bold()
-            }
-            .offset(y: 314)
         }
     }
 }

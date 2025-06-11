@@ -9,69 +9,71 @@ import Foundation
 import SwiftUI
 
 struct OnboardingPage1: View {
-    // Action closures for buttons
     var skipAction: () -> Void
-    var nextAction: () -> Void
+    var switchToNextPage: () -> Void
     
     var body: some View {
         ZStack {
-            Color.backC.ignoresSafeArea()
+            // Gradient background
+            LinearGradient(
+                gradient: Gradient(stops: [
+                    .init(color: Color(hex: "#3A4354"), location: 0.0),
+                    .init(color: Color(hex: "#3A4354"), location: 0.0),
+                    .init(color: Color(hex: "#F5F5F5"), location: 0.5),
+                    .init(color: Color(hex: "#F5F5F5"), location: 1.0)
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
             
+            // Skip button positioned at top-right
             VStack {
                 HStack {
                     Spacer()
-                    
                     Button(action: {
-                        skipAction() // Use the provided action
+                        skipAction()
                     }) {
                         Text("Skip")
-                            .font(.headline)
-                            .foregroundColor(.blue)
-                            .bold()
-                            .padding()
+                            .fontWeight(.regular)
+                            .font(.system(size: 20))
+                            .foregroundColor(Color("yellow1"))
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 10)
                     }
+                    .padding(.top, 55)
+                    .padding(.trailing, 10)
                 }
-                
                 Spacer()
             }
             
-            RoundedRectangle(cornerRadius: 200)
-                .offset(y: 210)
-                .fill(Color.primyC)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 200)
-                        .stroke(Color.strkC, lineWidth: 5)
-                        .offset(y: 210)
-                )
-                .ignoresSafeArea()
-            
-            HStack {
+            // Main content - centered
+            VStack {
+                Spacer()
+                
+                // Phone image
                 Image("ph")
                     .resizable()
-                    .frame(width: 210, height: 210)
-                    .ignoresSafeArea()
+                    .frame(width: 300, height: 300)
+                
+                // Title
+                Text("Instant Dashboard Detection")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.primyC)
+                    .padding(.top, 30)
+                
+                // Description text
+                Text("Point your camera at your dashboard and instantly identify any warning lights with AI-powered detection")
+                    .font(.system(size: 15, weight: .regular))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondryC)
+                    .padding(.horizontal, 30)
+                    .padding(.top, 5)
+                
+                Spacer()
+                Spacer()
             }
-            
-            Text("Simply take a picture of the sign appears in the dashboard")
-                .fontWeight(.bold)
-                .offset(y: 187)
-                .multilineTextAlignment(.center)
-                .lineLimit(10)
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-            
-            Button(action: {
-                nextAction() // Use the provided action
-            }) {
-                Text("Next")
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 80)
-                    .padding(.vertical, 15)
-                    .background(Color("yellow1"))
-                    .cornerRadius(18)
-                    .bold()
-            }
-            .offset(y: 314)
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }

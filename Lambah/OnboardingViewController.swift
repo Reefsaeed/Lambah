@@ -4,8 +4,6 @@
 //
 //  Created by Reef Saeed on 15/03/2025.
 //
-
-import Foundation
 import UIKit
 import SwiftUI
 
@@ -13,50 +11,33 @@ class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "backC") ?? .systemBackground
+        setupOnboardingView()
+    }
+    
+    private func setupOnboardingView() {
+        let onboardingView = OnboardingView { [weak self] in
+            self?.presentMainApp()
+        }
         
-        print("OnboardingViewController loaded")
-        // Create and configure the SwiftUI onboarding view
-        let onboardingView = OnboardingView(completionHandler: {
-            // This will be called when onboarding is complete
-            self.presentMainApp()
-        })
-        
-        // Create a UIHostingController to wrap the SwiftUI view
         let hostingController = UIHostingController(rootView: onboardingView)
+        hostingController.view.backgroundColor = UIColor(named: "backC") ?? .systemBackground
         
-        // Add the hosting controller as a child view controller
         addChild(hostingController)
         view.addSubview(hostingController.view)
-        
-        // Configure the hosting controller's view
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        
+        hostingController.view.frame = view.bounds
+        hostingController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         hostingController.didMove(toParent: self)
     }
     
     private func presentMainApp() {
-        // Get the main storyboard
-        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
         
-        // Get the main view controller from the storyboard
-        guard let mainViewController = mainStoryboard.instantiateInitialViewController() else {
-            fatalError("Could not load Main storyboard")
-        }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() else { return }
         
-        // Present the main view controller
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = windowScene.windows.first {
-            window.rootViewController = mainViewController
-            
-            // Add a smooth transition animation
-            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
-        }
+        window.rootViewController = mainVC
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
     }
 }
-
