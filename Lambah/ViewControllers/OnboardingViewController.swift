@@ -1,9 +1,10 @@
 //
 //  OnboardingViewController.swift
-//  CustomObjectDetector
+//  Lambah
 //
 //  Created by Reef Saeed on 15/03/2025.
 //
+
 import UIKit
 import SwiftUI
 
@@ -31,8 +32,6 @@ class OnboardingViewController: UIViewController {
     }
     
     private func presentMainApp() {
-        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
-        
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first,
               let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() else { return }
